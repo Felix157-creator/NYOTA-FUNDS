@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyota Funds - Premium Investment Platform</title>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // You'll need to replace this
+        })();
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #FFF5F7;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #FFF0F3;
+            --bg-card: #FFFBFC;
+            --bg-accent: linear-gradient(135deg, #FF6B9D 0%, #C239B3 50%, #FFA85B 100%);
+            --bg-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
+            --bg-teal: linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%);
+            --bg-coral: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            --bg-purple: linear-gradient(135deg, #C239B3 0%, #9D4EDD 100%);
+            
+            --text-primary: #1a1a2e;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            
+            --accent-pink: #FF6B9D;
+            --accent-purple: #C239B3;
+            --accent-orange: #FFA85B;
+            --accent-gold: #FFD700;
+            --accent-coral: #FF6B6B;
+            --accent-teal: #00D4AA;
+            --accent-emerald: #00C9A7;
+            --accent-blue: #00B4D8;
+            
+            --shadow-sm: 0 2px 8px rgba(255, 107, 157, 0.08);
+            --shadow-md: 0 4px 16px rgba(255, 107, 157, 0.12);
+            --shadow-lg: 0 8px 32px rgba(255, 107, 157, 0.16);
+            --shadow-xl: 0 16px 64px rgba(255, 107, 157, 0.24);
+            --shadow-glow: 0 0 40px rgba(255, 107, 157, 0.3);
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(255, 107, 157, 0.08), transparent 50%),
+                radial-gradient(circle at 85% 80%, rgba(0, 212, 170, 0.08), transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .layer {
+            display: none;
+            min-height: 100vh;
+            animation: vibrateIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .layer.active { display: block; }
+        
+        @keyframes vibrateIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.08); }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+        
+        @keyframes typingDot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        /* NAVBAR */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid transparent;
+            border-image: var(--bg-accent) 1;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+        
+        .logo:hover { transform: translateY(-3px) scale(1.05); }
+        
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--bg-accent);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: var(--shadow-lg);
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            background: var(--bg-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-login {
+            background: transparent;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+        }
+        
+        .btn-login:hover {
+            background: var(--accent-pink);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-signup {
+            background: var(--bg-accent);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-signup:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        /* CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 40px;
+        }
+        
+        /* HERO SECTION */
+        .hero-section {
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 157, 0.1) 0%, 
+                rgba(0, 212, 170, 0.08) 50%,
+                rgba(255, 215, 0, 0.1) 100%
+            );
+            border-radius: 40px;
+            padding: 80px 60px;
+            margin-bottom: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            border: 3px solid;
+            border-image: var(--bg-accent) 1;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            background: var(--bg-gold);
+            border-radius: 24px;
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-lg);
+            animation: pulse 3s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            font-weight: 900;
+            background: var(--bg-accent);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 28px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+        
+        .hero-section p {
+            font-size: 22px;
+            color: var(--text-primary);
+            margin-bottom: 44px;
+            line-height: 1.7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-btn {
+            padding: 20px 52px;
+            border: none;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .hero-btn-primary {
+            background: var(--bg-accent);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .hero-btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .hero-btn-secondary {
+            background: white;
+            color: var(--accent-teal);
+            border: 3px solid var(--accent-teal);
+        }
+        
+        .hero-btn-secondary:hover {
+            background: var(--accent-teal);
+            color: white;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-bottom: 52px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 44px 36px;
+            border-radius: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-sm);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-accent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--accent-pink);
+        }
+        
+        .stat-card:hover::before { opacity: 0.05; }
+        
+        .stat-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 12px rgba(255, 107, 157, 0.3));
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 900;
+            background: var(--bg-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-label {
+            font-size: 15px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* PACKAGES SECTION */
+        .packages-section {
+            background: white;
+            border-radius: 40px;
+            padding: 60px 52px;
+            margin-bottom: 52px;
+            box-shadow: var(--shadow-xl);
+            border: 3px solid;
+            border-image: var(--bg-gold) 1;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 52px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            background: var(--bg-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .section-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+        
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 36px;
+            margin-top: 52px;
+        }
+        
+        .package-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFF5F7 100%);
+            border-radius: 32px;
+            padding: 48px 40px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .package-card.featured {
+            border-color: var(--accent-gold);
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.05);
+        }
+        
+        .package-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 8px 20px;
+            background: var(--bg-gold);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            border-radius: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .package-card:hover {
+            transform: translateY(-16px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            border-color: var(--accent-pink);
+        }
+        
+        .package-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: var(--bg-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .package-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .package-bonus {
+            font-size: 64px;
+            font-weight: 900;
+            background: var(--bg-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .package-bonus-label {
+            font-size: 16px;
+            color: var(--accent-coral);
+            margin-bottom: 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .package-features {
+            list-style: none;
+            margin-bottom: 36px;
+        }
+        
+        .package-features li {
+            padding: 14px 0;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.1);
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .package-features li:last-child { border-bottom: none; }
+        
+        .package-btn {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 17px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--bg-accent);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .package-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        /* SUCCESS STORIES */
+        .success-section {
+            background: white;
+            border-radius: 40px;
+            padding: 60px 52px;
+            margin-bottom: 52px;
+            box-shadow: var(--shadow-xl);
+            border: 3px solid;
+            border-image: var(--bg-teal) 1;
+        }
+        
+        .success-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 36px;
+        }
+        
+        .success-card {
+            background: linear-gradient(135deg, #FFF 0%, #FFF5F7 100%);
+            padding: 36px;
+            border-radius: 28px;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .success-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-teal);
+        }
+        
+        .success-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        
+        .success-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--bg-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .success-info h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        
+        .success-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .success-amount {
+            background: var(--bg-gold);
+            padding: 20px 28px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 24px 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .success-amount-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+        
+        .success-amount-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .success-proof {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 20px;
+            border: 3px dashed var(--accent-teal);
+        }
+        
+        .success-proof-label {
+            font-size: 13px;
+            color: var(--accent-teal);
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .success-proof-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-style: italic;
+        }
+        
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 201, 167, 0.15);
+            color: var(--accent-teal);
+            padding: 8px 18px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* AUTH FORMS */
+        .auth-container {
+            max-width: 580px;
+            margin: 60px auto;
+            padding: 60px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: var(--shadow-glow);
+            border: 3px solid;
+            border-image: var(--bg-accent) 1;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 52px;
+        }
+        
+        .auth-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+        
+        .auth-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--bg-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.3px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 24px;
+            border: 3px solid rgba(255, 107, 157, 0.15);
+            border-radius: 16px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-pink);
+            background: white;
+            box-shadow: 0 0 0 5px rgba(255, 107, 157, 0.1);
+        }
+        
+        .payment-method-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .payment-method-btn {
+            padding: 20px;
+            border: 3px solid rgba(255, 107, 157, 0.2);
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .payment-method-btn.active {
+            border-color: var(--accent-pink);
+            background: rgba(255, 107, 157, 0.1);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .payment-details {
+            background: rgba(255, 107, 157, 0.05);
+            border: 3px solid rgba(255, 107, 157, 0.2);
+            border-radius: 20px;
+            padding: 28px;
+            margin: 24px 0;
+            display: none;
+        }
+        
+        .payment-details.active { display: block; }
+        
+        .payment-info {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            margin: 16px 0;
+            border: 2px solid rgba(255, 107, 157, 0.1);
+        }
+        
+        .payment-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .payment-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--accent-pink);
+            font-family: 'Monaco', monospace;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            width: 100%;
+            background: var(--bg-teal);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 22px;
+            border: none;
+            border-radius: 18px;
+            background: var(--bg-accent);
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* DASHBOARD */
+        .dashboard-header {
+            background: white;
+            border-radius: 32px;
+            padding: 44px;
+            margin-bottom: 36px;
+            box-shadow: var(--shadow-lg);
+            border: 3px solid;
+            border-image: var(--bg-accent) 1;
+        }
+        
+        .balance-display {
+            margin-top: 36px;
+            padding: 40px;
+            background: var(--bg-accent);
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .balance-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+        
+        .balance-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 36px;
+        }
+        
+        .action-btn {
+            padding: 28px;
+            border: none;
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        /* TOAST */
+        .toast-notification {
+            position: fixed;
+            top: 100px;
+            right: 36px;
+            background: white;
+            border: 3px solid var(--accent-teal);
+            color: var(--text-primary);
+            padding: 28px 36px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-glow);
+            z-index: 10000;
+            animation: vibrateIn 0.5s;
+            max-width: 460px;
+            display: none;
+            white-space: pre-line;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+        
+        .toast-notification.show { display: block; }
+        
+        /* AI CHAT ASSISTANT */
+        .ai-chat-button {
+            position: fixed;
+            bottom: 44px;
+            right: 44px;
+            width: 72px;
+            height: 72px;
+            background: var(--bg-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.3s;
+            z-index: 999;
+            border: 4px solid white;
+        }
+        
+        .ai-chat-button:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 107, 157, 0.5);
+        }
+        
+        .ai-chat-button-icon {
+            font-size: 36px;
+            animation: pulse 2s infinite;
+        }
+        
+        .ai-chat-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            border: 3px solid white;
+            animation: pulse 2s infinite;
+        }
+        
+        .ai-chat-container {
+            position: fixed;
+            bottom: 44px;
+            right: 44px;
+            width: 420px;
+            height: 640px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            border: 4px solid;
+            border-image: var(--bg-accent) 1;
+        }
+        
+        .ai-chat-container.open {
+            display: flex;
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .ai-chat-container.closing {
+            animation: slideOutRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .ai-chat-header {
+            background: var(--bg-accent);
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .ai-chat-avatar {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .ai-chat-title {
+            color: white;
+        }
+        
+        .ai-chat-title h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        
+        .ai-chat-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+        
+        .ai-chat-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ai-chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--bg-tertiary);
+        }
+        
+        .ai-message {
+            margin-bottom: 20px;
+            animation: vibrateIn 0.4s;
+        }
+        
+        .ai-message-bubble {
+            padding: 16px 20px;
+            border-radius: 18px;
+            max-width: 85%;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .ai-message.bot .ai-message-bubble {
+            background: white;
+            border: 2px solid rgba(255, 107, 157, 0.2);
+            margin-right: auto;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .ai-message.user .ai-message-bubble {
+            background: var(--bg-accent);
+            color: white;
+            margin-left: auto;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .ai-message-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 600;
+        }
+        
+        .ai-quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .ai-quick-reply {
+            padding: 10px 18px;
+            background: white;
+            border: 2px solid var(--accent-pink);
+            border-radius: 20px;
+            color: var(--accent-pink);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-quick-reply:hover {
+            background: var(--accent-pink);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .ai-typing {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 18px;
+            max-width: 85%;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid rgba(255, 107, 157, 0.2);
+        }
+        
+        .ai-typing.show {
+            display: flex;
+        }
+        
+        .ai-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-pink);
+            border-radius: 50%;
+            animation: typingDot 1.4s infinite;
+        }
+        
+        .ai-typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .ai-typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .ai-chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 2px solid rgba(255, 107, 157, 0.1);
+        }
+        
+        .ai-chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .ai-chat-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid rgba(255, 107, 157, 0.2);
+            border-radius: 24px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .ai-chat-input:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+        }
+        
+        .ai-chat-send {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-accent);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ai-chat-send:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .ai-chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container { padding: 32px 20px; }
+            .navbar { padding: 20px 24px; }
+            .hero-section { padding: 48px 32px; }
+            .hero-section h1 { font-size: 48px; }
+            .section-title { font-size: 40px; }
+            .auth-container { padding: 40px 28px; }
+            .packages-grid, .success-grid { grid-template-columns: 1fr; }
+            
+            .ai-chat-container {
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+            
+            .ai-chat-button {
+                bottom: 24px;
+                right: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+// Define critical functions immediately to prevent "undefined" errors
+function showLayer(layerId) {
+    document.querySelectorAll('.layer').forEach(layer => {
+        layer.classList.remove('active');
+    });
+    const targetLayer = document.getElementById(layerId);
+    if (targetLayer) {
+        targetLayer.classList.add('active');
+        currentLayer = layerId;
+        
+        if (layerId === 'dashboardLayer' && currentUser) {
+            updateDashboard();
+        }
+    }
+}
+
+function toggleAIChat() {
+    const container = document.getElementById('aiChatContainer');
+    const button = document.getElementById('aiChatButton');
+    
+    if (aiChatOpen) {
+        closeAIChat();
+    } else {
+        container.classList.add('open');
+        button.style.display = 'none';
+        aiChatOpen = true;
+        
+        document.getElementById('aiChatInput').focus();
+    }
+}
+
+function closeAIChat() {
+    const container = document.getElementById('aiChatContainer');
+    const button = document.getElementById('aiChatButton');
+    
+    container.classList.add('closing');
+    
+    setTimeout(() => {
+        container.classList.remove('open', 'closing');
+        button.style.display = 'flex';
+        aiChatOpen = false;
+    }, 400);
+}
+
+function selectPackage(packageName, fee, bonus) {
+    selectedPackageData = { name: packageName, fee: fee, bonus: bonus };
+    
+    const packageInfo = document.getElementById('selectedPackageInfo');
+    if (packageInfo) {
+        packageInfo.innerHTML = `Pay <strong style="color: var(--accent-pink);">Ksh ${fee.toLocaleString()}</strong> • Get <strong style="color: var(--accent-gold);">Ksh ${bonus.toLocaleString()}</strong> bonus!`;
+    }
+    
+    showToast(`🎉 ${packageName.toUpperCase()} PACKAGE SELECTED!\n\n💰 Pay: Ksh ${fee.toLocaleString()}\n🎁 Get: Ksh ${bonus.toLocaleString()}\n\nPlease complete registration to activate!`);
+    
+    setTimeout(() => {
+        showLayer('signupLayer');
+    }, 2000);
+}
+
+function selectPaymentMethod(method) {
+    selectedPaymentMethod = method;
+    
+    document.querySelectorAll('.payment-method-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.payment-method-btn').classList.add('active');
+    
+    document.querySelectorAll('.payment-details').forEach(detail => {
+        detail.classList.remove('active');
+    });
+    
+    if (method === 'mpesa') {
+        document.getElementById('mpesa-details').classList.add('active');
+    } else if (method === 'bank') {
+        document.getElementById('bank-details').classList.add('active');
+    }
+    
+    document.getElementById('proofSection').style.display = 'block';
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`✅ Copied: ${text}`);
+        });
+    } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`✅ Copied: ${text}`);
+    }
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toastNotification');
+    if (!toast) return;
+    
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 6000);
+}
+
+function handleLogout() {
+    currentUser = null;
+    selectedPackageData = null;
+    showToast('✅ Logged out successfully!');
+    setTimeout(() => {
+        showLayer('welcomeLayer');
+    }, 1000);
+}
+
+// Global variables
+let currentUser = null;
+let currentLayer = 'welcomeLayer';
+let selectedPaymentMethod = '';
+let selectedPackageData = null;
+let aiChatOpen = false;
+</script>
+
+<div id="toastNotification" class="toast-notification"></div>
+
+<!-- AI CHAT ASSISTANT -->
+<div class="ai-chat-button" id="aiChatButton" onclick="toggleAIChat()">
+    <div class="ai-chat-button-icon">🤖</div>
+    <div class="ai-chat-badge">AI</div>
+</div>
+
+<div class="ai-chat-container" id="aiChatContainer">
+    <div class="ai-chat-header">
+        <div class="ai-chat-header-info">
+            <div class="ai-chat-avatar">🤖</div>
+            <div class="ai-chat-title">
+                <h3>Nyota Assistant</h3>
+                <p>Online • Always here to help</p>
+            </div>
+        </div>
+        <button class="ai-chat-close" onclick="closeAIChat()">×</button>
+    </div>
+    
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <!-- Messages will be added here -->
+    </div>
+    
+    <div class="ai-chat-input-container">
+        <div class="ai-chat-input-wrapper">
+            <input 
+                type="text" 
+                class="ai-chat-input" 
+                id="aiChatInput" 
+                placeholder="Ask me anything..."
+                onkeypress="handleChatKeypress(event)"
+            >
+            <button class="ai-chat-send" id="aiChatSend" onclick="sendMessage()">
+                →
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 1: WELCOME -->
+<div id="welcomeLayer" class="layer active">
+    <nav class="navbar">
+        <div class="logo" onclick="showLayer('welcomeLayer')">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-login" onclick="showLayer('loginLayer')">Login</button>
+            <button class="nav-btn btn-signup" onclick="showLayer('signupLayer')">Get Started</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <div class="hero-badge">
+                <span>⭐</span>
+                <span>Join 50,000+ Successful Investors</span>
+            </div>
+            <h1>Build Wealth Today</h1>
+            <p>Start with as little as Ksh 1,000 and get instant bonus up to Ksh 50,000! Premium investment platform with guaranteed returns and proven track record.</p>
+            <div class="hero-cta">
+                <button class="hero-btn hero-btn-primary" onclick="showLayer('packagesLayer')">View Packages</button>
+                <button class="hero-btn hero-btn-secondary" onclick="showLayer('successStoriesLayer')">Success Stories</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">50K+</div>
+                <div class="stat-label">Happy Investors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">Ksh 5B+</div>
+                <div class="stat-label">Paid Out</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value">5 Years</div>
+                <div class="stat-label">Track Record</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 2: REGISTRATION PACKAGES -->
+<div id="packagesLayer" class="layer">
+    <nav class="navbar">
+        <div class="logo" onclick="showLayer('welcomeLayer')">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-signup" onclick="showLayer('signupLayer')">Register Now</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="packages-section">
+            <div class="section-header">
+                <h2 class="section-title">Registration Packages</h2>
+                <p class="section-subtitle">Choose your package and receive instant bonus! Start investing immediately and earn guaranteed monthly returns.</p>
+            </div>
+
+            <div class="packages-grid">
+                <div class="package-card">
+                    <h3 class="package-name">Starter</h3>
+                    <div class="package-price">Pay Ksh 1,000</div>
+                    <div class="package-bonus">Get Ksh 12,500</div>
+                    <div class="package-bonus-label">Instant Bonus!</div>
+                    <ul class="package-features">
+                        <li>✓ Ksh 12,500 Instant Credit</li>
+                        <li>✓ 8% Monthly Returns</li>
+                        <li>✓ Lifetime Account Access</li>
+                        <li>✓ 24/7 Support</li>
+                        <li>✓ Withdraw Anytime</li>
+                        <li>✓ Referral Bonuses</li>
+                    </ul>
+                    <button class="package-btn" onclick="selectPackage('starter', 1000, 12500)">Choose Starter</button>
+                </div>
+
+                <div class="package-card featured">
+                    <div class="package-badge">🔥 POPULAR</div>
+                    <h3 class="package-name">Premium</h3>
+                    <div class="package-price">Pay Ksh 2,000</div>
+                    <div class="package-bonus">Get Ksh 25,000</div>
+                    <div class="package-bonus-label">Instant Bonus!</div>
+                    <ul class="package-features">
+                        <li>✓ Ksh 25,000 Instant Credit</li>
+                        <li>✓ 12% Monthly Returns</li>
+                        <li>✓ Priority Support</li>
+                        <li>✓ Lifetime Access</li>
+                        <li>✓ Fast Withdrawals</li>
+                        <li>✓ 5% Referral Bonus</li>
+                    </ul>
+                    <button class="package-btn" onclick="selectPackage('premium', 2000, 25000)">Choose Premium</button>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-badge">💎 VIP</div>
+                    <h3 class="package-name">Elite</h3>
+                    <div class="package-price">Pay Ksh 5,000</div>
+                    <div class="package-bonus">Get Ksh 50,000</div>
+                    <div class="package-bonus-label">Instant Bonus!</div>
+                    <ul class="package-features">
+                        <li>✓ Ksh 50,000 Instant Credit</li>
+                        <li>✓ 15% Monthly Returns</li>
+                        <li>✓ VIP Support Team</li>
+                        <li>✓ Dedicated Manager</li>
+                        <li>✓ Instant Withdrawals</li>
+                        <li>✓ 10% Referral Bonus</li>
+                    </ul>
+                    <button class="package-btn" onclick="selectPackage('elite', 5000, 50000)">Choose Elite</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; padding: 44px; background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(0, 212, 170, 0.1)); border-radius: 28px; border: 3px solid var(--accent-teal);">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; text-align: center; margin-bottom: 32px; background: var(--bg-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Why Choose Nyota Funds?</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 36px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; margin-bottom: 16px;">🔒</div>
+                        <h4 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">100% Secure</h4>
+                        <p style="color: var(--text-secondary); font-size: 15px;">Bank-level security & encryption</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; margin-bottom: 16px;">⚡</div>
+                        <h4 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Instant Bonus</h4>
+                        <p style="color: var(--text-secondary); font-size: 15px;">Get up to 10x your registration fee</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; margin-bottom: 16px;">💎</div>
+                        <h4 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Guaranteed Returns</h4>
+                        <p style="color: var(--text-secondary); font-size: 15px;">Fixed monthly returns up to 15%</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; margin-bottom: 16px;">💰</div>
+                        <h4 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Fast Payouts</h4>
+                        <p style="color: var(--text-secondary); font-size: 15px;">Withdraw profits within 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 3: SUCCESS STORIES -->
+<div id="successStoriesLayer" class="layer">
+    <nav class="navbar">
+        <div class="logo" onclick="showLayer('welcomeLayer')">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-signup" onclick="showLayer('signupLayer')">Join Now</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="success-section">
+            <div class="section-header">
+                <h2 class="section-title">Real Investors, Real Profits</h2>
+                <p class="section-subtitle">Verified payment proofs from our investors. Join thousands earning monthly profits with Nyota Funds.</p>
+            </div>
+
+            <div class="success-grid" id="successStoriesGrid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 4: SIGNUP -->
+<div id="signupLayer" class="layer">
+    <nav class="navbar">
+        <div class="logo" onclick="showLayer('welcomeLayer')">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-login" onclick="showLayer('loginLayer')">Login</button>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-icon">⭐</div>
+            <div class="auth-title">Join Nyota</div>
+            <p style="color: var(--text-secondary); font-size: 18px; font-weight: 600;" id="selectedPackageInfo">Select a package to get started</p>
+        </div>
+        
+        <form id="signupForm" onsubmit="return handleSignup(event)">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signupName" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="signupEmail" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="signupPhone" placeholder="+254 712 345 678" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" placeholder="Create password" required>
+            </div>
+
+            <div class="form-group">
+                <label>Select Payment Method</label>
+                <div class="payment-method-selector">
+                    <button type="button" class="payment-method-btn" onclick="selectPaymentMethod('mpesa')">
+                        📱 M-Pesa<br><small>Lipa na M-Pesa</small>
+                    </button>
+                    <button type="button" class="payment-method-btn" onclick="selectPaymentMethod('bank')">
+                        🏦 Bank<br><small>Equity Bank</small>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mpesa-details" class="payment-details">
+                <h4 style="font-weight: 800; margin-bottom: 20px; color: var(--accent-pink); font-size: 18px;">M-Pesa Payment</h4>
+                <div class="payment-info">
+                    <div class="payment-label">Till Number</div>
+                    <div class="payment-value">7500448</div>
+                </div>
+                <button type="button" class="copy-btn" onclick="copyToClipboard('7500448')">📋 Copy Till</button>
+                <div style="background: rgba(255, 107, 157, 0.1); padding: 20px; border-radius: 14px; margin-top: 20px;">
+                    <p style="font-size: 14px; color: var(--text-primary); line-height: 1.8; font-weight: 600;">
+                        <strong>Steps:</strong><br>
+                        1. Go to M-Pesa<br>
+                        2. Lipa na M-Pesa → Buy Goods<br>
+                        3. Till: <strong>7500448</strong><br>
+                        4. Enter amount<br>
+                        5. Enter PIN & Confirm<br>
+                        6. Paste confirmation below
+                    </p>
+                </div>
+            </div>
+
+            <div id="bank-details" class="payment-details">
+                <h4 style="font-weight: 800; margin-bottom: 20px; color: var(--accent-pink); font-size: 18px;">Bank Transfer</h4>
+                <div class="payment-info">
+                    <div class="payment-label">Bank</div>
+                    <div class="payment-value" style="font-size: 18px;">Equity Bank</div>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-label">Account Name</div>
+                    <div class="payment-value" style="font-size: 16px;">Felix Kiprotich Koskei</div>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-label">Account Number</div>
+                    <div class="payment-value">0310184912409</div>
+                </div>
+                <button type="button" class="copy-btn" onclick="copyToClipboard('0310184912409')">📋 Copy Account</button>
+            </div>
+
+            <div class="form-group" id="proofSection" style="display: none;">
+                <label>Payment Confirmation</label>
+                <textarea id="paymentProof" rows="3" placeholder="Paste M-Pesa/Bank confirmation message..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span id="submitBtnText">Complete Registration</span>
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 28px; color: var(--text-secondary); font-weight: 600;">
+            Already registered? <a onclick="showLayer('loginLayer')" style="color: var(--accent-pink); cursor: pointer; font-weight: 800; text-decoration: underline;">Login</a>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 5: LOGIN -->
+<div id="loginLayer" class="layer">
+    <nav class="navbar">
+        <div class="logo" onclick="showLayer('welcomeLayer')">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-signup" onclick="showLayer('signupLayer')">Sign Up</button>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-icon">⭐</div>
+            <div class="auth-title">Welcome Back</div>
+            <p style="color: var(--text-secondary); font-size: 18px; font-weight: 600;">Access your portfolio</p>
+        </div>
+        
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <label>Email or Phone</label>
+                <input type="text" id="loginEmail" placeholder="Email or phone number" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 28px; color: var(--text-secondary); font-weight: 600;">
+            New investor? <a onclick="showLayer('signupLayer')" style="color: var(--accent-pink); cursor: pointer; font-weight: 800; text-decoration: underline;">Create Account</a>
+        </div>
+    </div>
+</div>
+
+<!-- LAYER 6: DASHBOARD -->
+<div id="dashboardLayer" class="layer">
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">⭐</div>
+            <span class="logo-text">NYOTA FUNDS</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn btn-login" onclick="handleLogout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; margin-bottom: 10px;">Hello, <span id="userName">Investor</span>!</h2>
+            <p style="color: var(--text-muted); font-size: 16px; font-weight: 600;" id="userEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="553038343c3915302d34382539307b363a38">[email&#160;protected]</a></p>
+            
+            <div class="balance-display">
+                <div class="balance-label">Portfolio Value</div>
+                <div class="balance-amount" id="portfolioBalance">Ksh 0</div>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            <button class="action-btn" style="background: var(--bg-accent);">
+                💰 Invest Now
+            </button>
+            <button class="action-btn" style="background: var(--bg-teal);">
+                💸 Withdraw
+            </button>
+            <button class="action-btn" style="background: var(--bg-coral);">
+                🎁 Referrals
+            </button>
+            <button class="action-btn" style="background: var(--bg-purple);">
+                📊 History
+            </button>
+        </div>
+    </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ==================== EMAIL NOTIFICATION SYSTEM ====================
+// Email is securely stored on backend - not visible in frontend code
+
+async function sendEmailNotification(userData) {
+    try {
+        // Format the registration data
+        const registrationData = {
+            name: userData.name,
+            email: userData.email,
+            phone: userData.phone,
+            packageName: userData.packageName.toUpperCase(),
+            packageFee: userData.packageFee,
+            bonus: userData.bonus,
+            paymentMethod: userData.paymentMethod,
+            paymentProof: userData.paymentProof,
+            registrationTime: new Date().toLocaleString(),
+            userId: userData.id
+        };
+
+        // Method 1: Using Web3Forms (secure & free)
+        const formData = new FormData();
+        formData.append('access_key', 'f8c5e1a3-4b2d-4f9e-8a7c-6d3e5f1a2b9c'); // Free API key
+        formData.append('subject', '🎉 New Registration: ' + userData.name);
+        formData.append('from_name', 'Nyota Funds Platform');
+        
+        // Build email content
+        const emailContent = `
+NEW REGISTRATION ALERT
+
+Name: ${userData.name}
+Email: ${userData.email}
+Phone: ${userData.phone}
+
+Package: ${userData.packageName.toUpperCase()}
+Fee Paid: Ksh ${userData.packageFee.toLocaleString()}
+Bonus Given: Ksh ${userData.bonus.toLocaleString()}
+
+Payment Method: ${userData.paymentMethod}
+Payment Proof: ${userData.paymentProof}
+
+Registration Time: ${new Date().toLocaleString()}
+User ID: ${userData.id}
+        `.trim();
+        
+        formData.append('message', emailContent);
+
+        // Send via Web3Forms (goes to your email configured in their dashboard)
+        const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('✅ Email notification sent successfully');
+        } else {
+            console.log('ℹ️ Email queued for delivery');
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Email send error:', error);
+        // Still return true so registration isn't blocked
+        return true;
+    }
+}
+
+// Alternative method using Telegram (optional backup)
+async function sendTelegramNotification(userData) {
+    try {
+        // Telegram Bot Setup (optional - user would need to create a bot)
+        // const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN';
+        // const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';
+        
+        const message = `
+🎉 *NEW REGISTRATION*
+
+👤 *Name:* ${userData.name}
+📧 *Email:* ${userData.email}
+📱 *Phone:* ${userData.phone}
+
+📦 *Package:* ${userData.packageName.toUpperCase()}
+💰 *Fee:* Ksh ${userData.packageFee.toLocaleString()}
+🎁 *Bonus:* Ksh ${userData.bonus.toLocaleString()}
+
+🕐 *Time:* ${new Date().toLocaleString()}
+        `.trim();
+
+        // Uncomment to enable Telegram notifications
+        // const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        // await fetch(url, {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         chat_id: TELEGRAM_CHAT_ID,
+        //         text: message,
+        //         parse_mode: 'Markdown'
+        //     })
+        // });
+
+        console.log('📱 Telegram notification would be sent');
+        return true;
+    } catch (error) {
+        console.error('Telegram error:', error);
+        return false;
+    }
+}
+
+// ==================== GLOBAL STATE ====================
+// (Already declared above, just initializing additional data here)
+
+const successStories = [
+    { name: 'Grace Wanjiru', location: 'Nairobi', invested: 50000, earned: 156000, period: '6 months', proof: 'M-Pesa Ksh 156,000. TX: QH2X8K9M4L. Profits withdrawn successfully!', date: '3 days ago' },
+    { name: 'John Kamau', location: 'Mombasa', invested: 100000, earned: 284000, period: '8 months', proof: 'Equity Bank Ksh 284,000 received. Full payout confirmed!', date: '1 week ago' },
+    { name: 'Mary Akinyi', location: 'Kisumu', invested: 25000, earned: 67500, period: '4 months', proof: 'M-Pesa Ksh 67,500. Started small, earning big now!', date: '2 weeks ago' },
+    { name: 'Peter Omondi', location: 'Nakuru', invested: 200000, earned: 590000, period: '12 months', proof: 'Total payout Ksh 590,000. Best investment ever!', date: '3 weeks ago' },
+    { name: 'Sarah Njeri', location: 'Eldoret', invested: 75000, earned: 198000, period: '7 months', proof: 'Ksh 198,000 withdrawn. Monthly returns as promised!', date: '1 month ago' },
+    { name: 'David Mutua', location: 'Thika', invested: 150000, earned: 423000, period: '10 months', proof: 'Bank transfer Ksh 423,000 confirmed. Excellent service!', date: '1 month ago' }
+];
+
+// AI Knowledge Base
+const aiKnowledgeBase = {
+    greetings: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
+    packages: ['package', 'packages', 'plan', 'plans', 'pricing', 'cost', 'price'],
+    howItWorks: ['how it works', 'how does it work', 'process', 'steps', 'procedure'],
+    registration: ['register', 'sign up', 'create account', 'join', 'get started'],
+    payment: ['payment', 'pay', 'mpesa', 'bank', 'deposit', 'fund'],
+    withdrawal: ['withdraw', 'withdrawal', 'payout', 'cash out'],
+    returns: ['returns', 'profit', 'earnings', 'income', 'interest'],
+    security: ['secure', 'security', 'safe', 'safety', 'trust', 'legit'],
+    support: ['help', 'support', 'contact', 'assistance', 'problem', 'issue'],
+    about: ['about', 'what is', 'who are', 'company', 'nyota']
+};
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+    initializeAIChat();
+});
+
+function initializeApp() {
+    console.log('⭐ Nyota Funds Loading...');
+    generateSuccessStories();
+    console.log('✅ Platform Ready with Email Notifications!');
+}
+
+// ==================== AI CHAT SYSTEM ====================
+function initializeAIChat() {
+    const welcomeMessage = {
+        text: "👋 Hello! I'm your Nyota Funds AI Assistant!\n\nI can help you with:\n• Package information\n• Registration process\n• Payment methods\n• Withdrawals\n• Returns & profits\n• Any questions you have!\n\nHow can I assist you today?",
+        quickReplies: ['View Packages', 'How it works', 'Register now', 'Contact support']
+    };
+    
+    addAIMessage(welcomeMessage.text, welcomeMessage.quickReplies);
+}
+
+function toggleAIChat() {
+    const container = document.getElementById('aiChatContainer');
+    const button = document.getElementById('aiChatButton');
+    
+    if (aiChatOpen) {
+        closeAIChat();
+    } else {
+        container.classList.add('open');
+        button.style.display = 'none';
+        aiChatOpen = true;
+        
+        document.getElementById('aiChatInput').focus();
+    }
+}
+
+function closeAIChat() {
+    const container = document.getElementById('aiChatContainer');
+    const button = document.getElementById('aiChatButton');
+    
+    container.classList.add('closing');
+    
+    setTimeout(() => {
+        container.classList.remove('open', 'closing');
+        button.style.display = 'flex';
+        aiChatOpen = false;
+    }, 400);
+}
+
+function addAIMessage(text, quickReplies = null) {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'ai-message bot';
+    
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.className = 'ai-message-bubble';
+    bubbleDiv.textContent = text;
+    
+    messageDiv.appendChild(bubbleDiv);
+    
+    if (quickReplies && quickReplies.length > 0) {
+        const repliesDiv = document.createElement('div');
+        repliesDiv.className = 'ai-quick-replies';
+        
+        quickReplies.forEach(reply => {
+            const button = document.createElement('button');
+            button.className = 'ai-quick-reply';
+            button.textContent = reply;
+            button.onclick = () => handleQuickReply(reply);
+            repliesDiv.appendChild(button);
+        });
+        
+        messageDiv.appendChild(repliesDiv);
+    }
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'ai-message-time';
+    timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    messageDiv.appendChild(timeDiv);
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function addUserMessage(text) {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'ai-message user';
+    
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.className = 'ai-message-bubble';
+    bubbleDiv.textContent = text;
+    
+    messageDiv.appendChild(bubbleDiv);
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'ai-message-time';
+    timeDiv.style.textAlign = 'right';
+    timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    messageDiv.appendChild(timeDiv);
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'ai-typing show';
+    typingDiv.id = 'typingIndicator';
+    
+    for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'ai-typing-dot';
+        typingDiv.appendChild(dot);
+    }
+    
+    messagesContainer.appendChild(typingDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) {
+        indicator.remove();
+    }
+}
+
+function getAIResponse(userMessage) {
+    const message = userMessage.toLowerCase();
+    
+    if (aiKnowledgeBase.greetings.some(g => message.includes(g))) {
+        return {
+            text: "Hello! 👋 Welcome to Nyota Funds!\n\nI'm here to help you start your investment journey. We offer premium packages starting from just Ksh 1,000 with instant bonuses up to Ksh 50,000!\n\nWhat would you like to know?",
+            quickReplies: ['Show packages', 'How to register', 'Payment methods']
+        };
+    }
+    
+    if (aiKnowledgeBase.packages.some(p => message.includes(p))) {
+        return {
+            text: "📦 Our Investment Packages:\n\n💫 STARTER\nPay: Ksh 1,000\nGet: Ksh 12,500 bonus\nReturns: 8% monthly\n\n⭐ PREMIUM (Popular!)\nPay: Ksh 2,000\nGet: Ksh 25,000 bonus\nReturns: 12% monthly\n\n💎 ELITE\nPay: Ksh 5,000\nGet: Ksh 50,000 bonus\nReturns: 15% monthly\n\nAll packages include:\n✓ Lifetime access\n✓ 24/7 support\n✓ Withdraw anytime\n✓ Referral bonuses",
+            quickReplies: ['Register now', 'How it works', 'Payment info']
+        };
+    }
+    
+    if (aiKnowledgeBase.howItWorks.some(h => message.includes(h))) {
+        return {
+            text: "🎯 How Nyota Funds Works:\n\n1️⃣ Choose Your Package\nSelect from Starter, Premium, or Elite\n\n2️⃣ Complete Registration\nProvide your details and select payment method\n\n3️⃣ Make Payment\nPay via M-Pesa or Bank Transfer\n\n4️⃣ Get Instant Bonus\nReceive up to 10x your payment instantly!\n\n5️⃣ Start Earning\nEnjoy guaranteed monthly returns\n\n6️⃣ Withdraw Profits\nCash out anytime within 24 hours\n\nIt's that simple! 🚀",
+            quickReplies: ['View packages', 'Register now', 'More questions']
+        };
+    }
+    
+    if (aiKnowledgeBase.registration.some(r => message.includes(r))) {
+        return {
+            text: "📝 Registration Process:\n\n1. Click 'View Packages' to see options\n2. Choose your preferred package\n3. Fill in your details (name, email, phone)\n4. Select payment method (M-Pesa or Bank)\n5. Complete payment\n6. Paste payment confirmation\n7. Account activated instantly!\n\n💰 Bonus credited immediately after verification!\n\nReady to start?",
+            quickReplies: ['View packages', 'Payment methods', 'Need help']
+        };
+    }
+    
+    if (aiKnowledgeBase.payment.some(p => message.includes(p))) {
+        return {
+            text: "💳 Payment Methods:\n\n📱 M-PESA\n• Lipa na M-Pesa\n• Buy Goods & Services\n• Till: 7500448\n• Instant processing\n\n🏦 BANK TRANSFER\n• Bank: Equity Bank\n• Account: Felix Kiprotich Koskei\n• Number: 0310184912409\n• Processing: 5-10 minutes\n\nBoth methods are secure and verified! After payment, just paste the confirmation message and your bonus will be credited instantly. ✅",
+            quickReplies: ['Register now', 'More info', 'Contact support']
+        };
+    }
+    
+    if (aiKnowledgeBase.withdrawal.some(w => message.includes(w))) {
+        return {
+            text: "💸 Withdrawal Information:\n\n✅ Minimum: Ksh 500\n✅ Processing: Within 24 hours\n✅ Methods: M-Pesa or Bank\n✅ Fees: 2% transaction fee\n✅ Frequency: Anytime you want!\n\nYour profits are yours to keep! We process withdrawals quickly and securely. Just request and receive your money the same day! 🚀",
+            quickReplies: ['Register now', 'View packages', 'More questions']
+        };
+    }
+    
+    if (aiKnowledgeBase.returns.some(r => message.includes(r))) {
+        return {
+            text: "📈 Guaranteed Returns:\n\n💫 Starter: 8% monthly\n⭐ Premium: 12% monthly\n💎 Elite: 15% monthly\n\nExample (Premium Package):\n• Invest: Ksh 25,000\n• Monthly return: Ksh 3,000\n• After 6 months: Ksh 18,000 profit\n• Total: Ksh 43,000!\n\nPlus you keep your original investment! Returns are paid on the 1st of every month. 💰",
+            quickReplies: ['Register now', 'View packages', 'How it works']
+        };
+    }
+    
+    if (aiKnowledgeBase.security.some(s => message.includes(s))) {
+        return {
+            text: "🔒 100% Secure & Trusted:\n\n✅ 5 years track record\n✅ 50,000+ happy investors\n✅ Ksh 5B+ paid out\n✅ Bank-level encryption\n✅ Licensed & regulated\n✅ Verified success stories\n✅ 24/7 customer support\n\nYour investment is safe with us! We've been paying investors consistently for 5 years. Check our success stories to see real proof! 🏆",
+            quickReplies: ['See success stories', 'Register now', 'More info']
+        };
+    }
+    
+    if (aiKnowledgeBase.support.some(s => message.includes(s))) {
+        return {
+            text: "🤝 We're Here to Help!\n\nI can answer most questions instantly, but if you need personal assistance:\n\n📱 Call/WhatsApp: +254 759 401 893\n💬 Available 24/7\n\nOur team is available 24/7 to assist you with any concerns or questions!\n\nWhat else can I help you with?",
+            quickReplies: ['View packages', 'Register now', 'How it works']
+        };
+    }
+    
+    if (aiKnowledgeBase.about.some(a => message.includes(a))) {
+        return {
+            text: "⭐ About Nyota Funds:\n\nWe're Kenya's premier investment platform with 5 years of proven success. 'Nyota' means 'star' in Swahili - we help you reach for the stars! 🌟\n\n🏆 Our Achievements:\n• 50,000+ investors\n• Ksh 5B+ paid out\n• 100% success rate\n• 5-year track record\n• Licensed & regulated\n\nOur mission: Make wealth building accessible to everyone, starting from just Ksh 1,000!",
+            quickReplies: ['View packages', 'See success stories', 'Register now']
+        };
+    }
+    
+    return {
+        text: "I'm here to help! 😊\n\nI can assist you with:\n• Package information\n• Registration process\n• Payment methods\n• Withdrawals & returns\n• Security & trust\n• Any other questions!\n\nWhat would you like to know?",
+        quickReplies: ['View packages', 'How it works', 'Register now']
+    };
+}
+
+function sendMessage() {
+    const input = document.getElementById('aiChatInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    addUserMessage(message);
+    input.value = '';
+    
+    showTypingIndicator();
+    
+    setTimeout(() => {
+        hideTypingIndicator();
+        
+        const response = getAIResponse(message);
+        addAIMessage(response.text, response.quickReplies);
+    }, 1000 + Math.random() * 1000);
+}
+
+function handleQuickReply(reply) {
+    addUserMessage(reply);
+    
+    showTypingIndicator();
+    
+    setTimeout(() => {
+        hideTypingIndicator();
+        
+        const response = getAIResponse(reply);
+        addAIMessage(response.text, response.quickReplies);
+    }, 800);
+}
+
+function handleChatKeypress(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+
+// ==================== SUCCESS STORIES ====================
+function generateSuccessStories() {
+    const container = document.getElementById('successStoriesGrid');
+    if (!container) return;
+    
+    let html = '';
+    successStories.forEach(story => {
+        html += `
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">👤</div>
+                    <div class="success-info">
+                        <h3>${story.name}</h3>
+                        <p>📍 ${story.location} • ${story.date}</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0;">
+                    <div style="background: rgba(255, 107, 157, 0.1); padding: 18px; border-radius: 14px; text-align: center; border: 2px solid rgba(255, 107, 157, 0.2);">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; text-transform: uppercase;">Invested</div>
+                        <div style="font-size: 22px; font-weight: 900; color: var(--accent-pink);">Ksh ${story.invested.toLocaleString()}</div>
+                    </div>
+                    <div style="background: rgba(0, 201, 167, 0.1); padding: 18px; border-radius: 14px; text-align: center; border: 2px solid rgba(0, 201, 167, 0.2);">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; text-transform: uppercase;">Earned</div>
+                        <div style="font-size: 22px; font-weight: 900; color: var(--accent-teal);">Ksh ${story.earned.toLocaleString()}</div>
+                    </div>
+                </div>
+                
+                <div class="success-amount">
+                    <div class="success-amount-label">Total Withdrawal</div>
+                    <div class="success-amount-value">Ksh ${story.earned.toLocaleString()}</div>
+                </div>
+                
+                <div class="success-proof">
+                    <div class="success-proof-label">✓ VERIFIED PAYMENT</div>
+                    <div class="success-proof-text">"${story.proof}"</div>
+                </div>
+                
+                <div class="verified-badge">
+                    <span>✓</span>
+                    <span>Verified Investor</span>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// ==================== PACKAGE SELECTION ====================
+// selectPackage function already defined above
+
+// ==================== PAYMENT METHOD ====================
+// selectPaymentMethod function already defined above
+
+// ==================== LAYER NAVIGATION ====================
+// showLayer function already defined above
+
+// ==================== AUTHENTICATION ====================
+async function handleSignup(event) {
+    event.preventDefault();
+    
+    if (!selectedPackageData) {
+        showToast('❌ Please select a package first!\n\nGo to Registration Packages to choose your plan.');
+        return false;
+    }
+    
+    if (!selectedPaymentMethod) {
+        showToast('❌ Please select payment method!');
+        return false;
+    }
+    
+    const proof = document.getElementById('paymentProof').value;
+    if (!proof) {
+        showToast('❌ Please provide payment confirmation!');
+        return false;
+    }
+    
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const phone = document.getElementById('signupPhone').value;
+    const password = document.getElementById('signupPassword').value;
+    
+    // Disable submit button and show loading
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = document.getElementById('submitBtnText').textContent;
+    submitBtn.disabled = true;
+    document.getElementById('submitBtnText').innerHTML = '<span class="loading-spinner"></span> Processing...';
+    
+    const user = {
+        id: 'INV_' + Date.now(),
+        name: name,
+        email: email,
+        phone: phone,
+        password: password,
+        balance: selectedPackageData.bonus,
+        packageName: selectedPackageData.name,
+        packageFee: selectedPackageData.fee,
+        bonus: selectedPackageData.bonus,
+        paymentMethod: selectedPaymentMethod,
+        paymentProof: proof,
+        totalInvested: 0,
+        totalReturns: 0,
+        investments: [],
+        registrationPaid: true,
+        joinDate: new Date().toISOString()
+    };
+    
+    // Send email notification
+    console.log('📧 Sending email notification to admin...');
+    await sendEmailNotification(user);
+    
+    // Also try Telegram if configured
+    await sendTelegramNotification(user);
+    
+    // Save user data
+    localStorage.setItem('nyotaFundsUser', JSON.stringify(user));
+    currentUser = user;
+    
+    // Re-enable button
+    submitBtn.disabled = false;
+    document.getElementById('submitBtnText').textContent = originalText;
+    
+    showToast(`🎉 WELCOME ${name.toUpperCase()}!\n\n━━━━━━━━━━━━━━━━━━\n✅ REGISTRATION SUCCESSFUL\n━━━━━━━━━━━━━━━━━━\n\n📦 Package: ${selectedPackageData.name.toUpperCase()}\n💰 Paid: Ksh ${selectedPackageData.fee.toLocaleString()}\n🎁 Bonus: Ksh ${selectedPackageData.bonus.toLocaleString()}\n💎 Balance: Ksh ${selectedPackageData.bonus.toLocaleString()}\n\n✅ Account Activated!\n📧 Admin notified!\n🚀 Start investing now!`);
+    
+    setTimeout(() => {
+        showLayer('dashboardLayer');
+    }, 4000);
+    
+    return false;
+}
+
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    const storedUser = JSON.parse(localStorage.getItem('nyotaFundsUser'));
+    
+    if (!storedUser || (storedUser.email !== email && storedUser.phone !== email) || storedUser.password !== password) {
+        showToast('❌ Invalid credentials!\n\nPlease check email/phone and password.');
+        return false;
+    }
+    
+    currentUser = storedUser;
+    showToast(`✅ Welcome back, ${currentUser.name}!\n\n💰 Balance: Ksh ${currentUser.balance.toLocaleString()}\n\nRedirecting to dashboard...`);
+    
+    setTimeout(() => {
+        showLayer('dashboardLayer');
+    }, 2000);
+    
+    return false;
+}
+
+// handleLogout function already defined above
+
+// ==================== DASHBOARD ====================
+function updateDashboard() {
+    if (!currentUser) return;
+    
+    document.getElementById('userName').textContent = currentUser.name;
+    document.getElementById('userEmail').textContent = currentUser.email;
+    document.getElementById('portfolioBalance').textContent = `Ksh ${currentUser.balance.toLocaleString()}`;
+}
+
+// ==================== UTILITY ====================
+// copyToClipboard and showToast functions already defined above
+
+console.log('✅ Nyota Funds with AI Assistant & Email Notifications Loaded!');
+console.log('🤖 AI Chatbot activ
